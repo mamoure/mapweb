@@ -35,6 +35,7 @@
            
             map.addControl(new mapboxgl.AttributionControl({compact: true}));
             map.addControl(new mapboxgl.NavigationControl());
+            
 
         //Añadir capas
         map.on('load', function () {
@@ -66,17 +67,48 @@
                     source: "sepulturas_source",
                     'source-layer': "sepulturas_girona-dr3l4j", //título capa
                     paint:{
-                        'circle-stroke-color': '#bc4f9d',
+                        'circle-stroke-color':  [
+                            "match", ["string", ["get", "TIPUSCONST"]],
+                                "A",
+                                "#bc4f9d",
+                                "C",
+                                "#c671ae",
+                                "H",
+                                "#d191bf",
+                                "N",
+                                "#ddb2d3",
+                                "P",
+                                "#ebd6e8",
+                                "#9f608e"
+                            ],
                         'circle-stroke-width': 0.1,
                         'circle-opacity': 0,
                         'circle-radius': 10
                     }
                 });
 
-            });
+                map.addSource("mobiliario_source", {
+                    type: "vector",
+                    url: "mapbox://mamoure.bwowr5k8" //poner mapbox://idtileset
+                });
+
+                map.addLayer({
+                    id: "mobiliario_girona",
+                    type: "circle",
+                    source: "mobiliario_source",
+                    'source-layer': "mobiliario_girona-a2w123", //título capa
+                    paint:{
+                        'circle-color': '#bc4f9d',
+                        'circle-radius': 3
+
+                    }
+                });
+
+            });      
 
         
         }
+        
     </script>
 </head>
 
