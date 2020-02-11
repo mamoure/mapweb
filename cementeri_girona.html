@@ -5,27 +5,29 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+    
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%
-        }
+        ul,ol{list-style:none}
+                h1,h2,h3,h4,h5,h6,pre,code{font-size:1em;}
+                ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset{
+                margin:0;padding:0;line-height:1; list-style:none;}
+                a img,:link img,:visited img, fieldset{border:none;}
+                input[type=submit], input[type=reset], input[type=button] { *filter:chroma(color=#000000); }
+        
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%; }
+        .legend {position:fixed; top:15%; right:1%; padding: 10px; width:8%; font-family:monospace; font-size: 12px; color:#5d594e; background-color: #f4e9d0; }
+        .legend div span { border-radius: 50%; display: inline-block; height: 8px; margin-right: 5px; width: 8px; }
+        div.legend h2 { padding-top: 10px;}
     </style>
+    
     <script>
-        //Añadir mi token y mi estilo
         function init() {
             mapboxgl.accessToken =
-                'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow';
+                'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow'; //Mi token
             var map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mamoure/ck6gnuzed2ano1ik7tbhv37eh',
+                style: 'mapbox://styles/mamoure/ck6gnuzed2ano1ik7tbhv37eh', //Mi estilo
                 center: [2.837324, 41.971928],
                 zoom: 18,
                 attributionControl: false,
@@ -33,80 +35,111 @@
                 hash:true
             });
            
+           //Controles
             map.addControl(new mapboxgl.AttributionControl({compact: true}));
             map.addControl(new mapboxgl.NavigationControl());
             
 
-        //Añadir capas
-        map.on('load', function () {
-                map.addSource("cementerio_source", {
-                    type: "vector",
-                    url: "mapbox://mamoure.brlzri0o" //poner mapbox://idtileset
+            //Añadir capas
+            map.on('load', function () {
+
+                    //Capa cementerio_girona
+                    map.addSource("cementerio_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.brlzri0o" //mapbox://idtileset
+                    });
+
+                    map.addLayer({
+                        id: "cementerio_girona",
+                        type: "fill-extrusion",
+                        source: "cementerio_source",
+                        'source-layer': "cementerio_girona-8xomwp", //título capa
+                        paint:{
+                            'fill-extrusion-color': '#9f853d',
+                            'fill-extrusion-height':3,
+                            'fill-extrusion-opacity': 0.4
+                        }
+                    });
+
+                    //Capa sepulturas_girona
+                    map.addSource("sepulturas_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.c3rk4li8" //mapbox://idtileset
+                    });
+
+                    map.addLayer({
+                        id: "sepulturas_girona",
+                        type: "circle",
+                        source: "sepulturas_source",
+                        'source-layer': "sepulturasfinal_girona-chpj4h", //título capa
+                        paint:{
+                            'circle-color':  [
+                                "match", ["string", ["get", "TIPUSCONST"]],
+                                    "A",
+                                    "#7f5e78",
+                                    "C",
+                                    "#9f608e",
+                                    "H",
+                                    "#bc4f9d",
+                                    "N",
+                                    "#c671ae",
+                                    "P",
+                                    "#d191bf",
+                                    "T",
+                                    "#ddb2d3",
+                                    "#ebd6e8"
+                                ],
+                            'circle-opacity': 1,
+                            'circle-radius': 3,
+                            'circle-pitch-alignment': 'map',
+                            'circle-pitch-scale': 'map'
+                        }
+                    });
+
+                    //Capa mobiliario_girona
+                    map.addSource("mobiliario_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.bwowr5k8" //mapbox://idtileset
+                    });
+
+                    map.addLayer({
+                        id: "mobiliario_girona",
+                        type: "circle",
+                        source: "mobiliario_source",
+                        'source-layer': "mobiliario_girona-a2w123", //título capa
+                        paint:{
+                            'circle-stroke-color': '#61c4b2',
+                            'circle-stroke-width': 0.5,
+                            'circle-opacity' : 0,
+                            'circle-radius': 15,
+                            'circle-pitch-alignment': 'map',
+                            'circle-pitch-scale': 'map'
+                        }
+                    });
+            });
+
+            //Añadir pop up
+            map.on('click', 'sepulturas_girona', function(e) {
+                new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(e.features[0].properties.ANY_CONST)
+                .addTo(map);
                 });
 
-                map.addLayer({
-                    id: "cementerio_girona",
-                    type: "fill-extrusion",
-                    source: "cementerio_source",
-                    'source-layer': "cementerio_girona-8xomwp", //título capa
-                    paint:{
-                        'fill-extrusion-color': '#9f853d',
-                        'fill-extrusion-height':3,
-                        'fill-extrusion-opacity': 0.4
-                    }
-                });
+            //Modificar cursor
+            map.on('mouseenter', 'sepulturas_girona', function() {
+            map.getCanvas().style.cursor = 'pointer';                    
+            });
 
-                map.addSource("sepulturas_source", {
-                    type: "vector",
-                    url: "mapbox://mamoure.70ew7ujn" //poner mapbox://idtileset
-                });
+            map.on('mouseleave', 'sepulturas_girona', function() {
+            map.getCanvas().style.cursor = '';                    
+            });
 
-                map.addLayer({
-                    id: "sepulturas_girona",
-                    type: "circle",
-                    source: "sepulturas_source",
-                    'source-layer': "sepulturas_girona-dr3l4j", //título capa
-                    paint:{
-                        'circle-stroke-color':  [
-                            "match", ["string", ["get", "TIPUSCONST"]],
-                                "A",
-                                "#bc4f9d",
-                                "C",
-                                "#c671ae",
-                                "H",
-                                "#d191bf",
-                                "N",
-                                "#ddb2d3",
-                                "P",
-                                "#ebd6e8",
-                                "#9f608e"
-                            ],
-                        'circle-stroke-width': 0.1,
-                        'circle-opacity': 0,
-                        'circle-radius': 10
-                    }
-                });
+            
 
-                map.addSource("mobiliario_source", {
-                    type: "vector",
-                    url: "mapbox://mamoure.bwowr5k8" //poner mapbox://idtileset
-                });
 
-                map.addLayer({
-                    id: "mobiliario_girona",
-                    type: "circle",
-                    source: "mobiliario_source",
-                    'source-layer': "mobiliario_girona-a2w123", //título capa
-                    paint:{
-                        'circle-color': '#bc4f9d',
-                        'circle-radius': 3
 
-                    }
-                });
-
-            });      
-
-        
+    
         }
         
     </script>
@@ -114,6 +147,27 @@
 
 <body onload="init()">
     <div id="map"></div>
+    <div class="legend">
+        <h1>Cementerio de Girona</h1>
+        <h2>Objetivo</h2>
+        <p>Estudio tipológico de las sepulturas localizadas en el antiguo cementerio de la
+            ciudad de Girona.</p>
+        <h2>Desarrollo</h2>
+        <p>Con Microstation se ha llevado a cabo un trabajo de campo para
+            digitalizar todas las sepulturas sobre la base cartográfica 1:500. La práctica final
+            es la creación de un visor web SIG del cementerio, de tal manera que al consultar una
+            sepultura tengamos información sobre su ubicación y año de construcción, y también
+            visualizar la información correspondiente al mobiliario que hay en el cementerio y
+            la estructura del mismo.
+        </p>
+        <h2>Tipología</h2>
+        <div><span style="background-color: #7f5e78"></span>Altar</div>
+        <div><span style="background-color: #9f608e"></span>Columbario</div>
+        <div><span style="background-color: #bc4f9d"></span>Hipogeo</div>
+        <div><span style="background-color: #c671ae"></span>Nicho</div>
+        <div><span style="background-color: #d191bf"></span>Panteón</div>
+        <div><span style="background-color: #ddb2d3"></span>Tumba</div>
+    </div>
 </body>
 
 </html>  
