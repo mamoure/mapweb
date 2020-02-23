@@ -21,26 +21,26 @@
             
             #map { position: relative; top: 0; bottom: 0; width: 100%; height: 100% }
 
-            .title { position:absolute; width:200px; top:20px; left:10px; padding-bottom: 1px; border-bottom: 3px solid #000000;  font-size: 60px; font-weight: 900;}
-                .title-small { font-size:40px; }
-            .sub-title { position:absolute; width:200px; top:200px; left:10px; padding-bottom: 20px; border-bottom: 3px solid #000000;  font-size: 40px; font-weight: 400; }
+            .title { position:absolute; width:200px; top:50px; left:10px; padding-bottom: 1px; border-top: 3px solid #000000; border-bottom: 3px solid #000000;  font-size: 60px; font-weight: 900;}
+                .title-small { padding-top: 8px; font-size:40px; }
+            .sub-title { position:absolute; width:200px; top:230px; left:10px; padding-bottom: 20px; border-bottom: 3px solid #000000;  font-size: 40px; font-weight: 400; }
             
-            .legend { position:absolute; width:200px; height: 300px; top:270px; left:10px; padding-bottom: 7px; border-bottom: 3px solid #000000; }
+            .legend { position:absolute; width:200px; height: 300px; top:300px; left:10px; padding-bottom: 7px; border-bottom: 3px solid #000000; }
                 .tab  { padding:5px; }
                     div.tab span { font-size: 10px; }
                     .tab-name { font-size: 12px; font-weight: 400; }
-                    .tab-layer1 { font-size: 12px; border:1px solid #000000; margin:2 0 2 0; color:#000000; }
-                    .tab-layer2 { font-size: 12px; color: white; padding:1px; margin:2 0 2 0; background-color: black;}
+                    .tab-layer1 { font-size: 12px; border:1px solid #555656; margin:2 0 2 0; color:#000000; }
+                    .tab-layer2 { font-size: 12px; color: white; padding:1px; margin:2 0 2 0; background-color: #555656;}
                     .tab-layer3 { font-size: 12px; border:1px solid #c4b72f; margin:2 0 2 0; color:#c4b72f; }
                     .tab-layer4 { font-size: 12px; color: white; padding:1px; margin:2 0 2 0; background-color: #c4b72f; }
                     .tab-layer5 { font-size: 12px; border:1px solid #ed254e; margin:2 0 2 0; color:#ed254e; }
 
                     #menu { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; }
-                    #menu a { display: block; padding:1px; margin:2 0 2 0; text-decoration: none; background-color:#2773ba ;font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; color:white;  }
-                        #menu a.active { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; color:white;  color: white; }
+                    #menu a { display: block; border:1px solid #4f70a0; margin:2 0 2 0; text-decoration: none; color:white; }
+                        #menu a.active { color:white; background-color:#4f70a0; }
             
-            .more-info { position:absolute; width:200px; top:600px; left:10px; }
-            div.more-info p {padding: 5px; border: 1px solid #ed254e; }
+            .sub-sub-title { position:absolute; width:200px; top:630px; left:10px; padding-bottom: 20px; border-bottom: 3px solid #000000;  font-size: 40px; font-weight: 400; }
+
             
 
         </style>
@@ -84,8 +84,7 @@
                         'source-layer': "camino_comarcas-bvhgu4", //poner vuestro titulo capa
                         paint:{
                             'fill-color': "transparent",
-                            'fill-outline-color': "#000000"
-                             
+                            'fill-outline-color': "#c4b72f"
                         }
                     });
                    
@@ -101,10 +100,9 @@
                         source: "camino_concellos_source",
                         'source-layer': "camino_concellos-0ke7y3", //poner vuestro titulo capa
                         paint:{
-                            'fill-color': "#000000",
+                            'fill-color': "#555656",
                             'fill-outline-color': "#ffffff",
-                            'fill-opacity':0.9
-                             
+                            'fill-opacity':1
                         }
                     });
 
@@ -120,9 +118,9 @@
                         source: "camino_parroquias_source",
                         'source-layer': "camino_parroquias-7ar5kc", //poner vuestro titulo capa
                         paint:{
-                            'fill-color': "#000000",
-                            'fill-outline-color': "#ffffff",
-                            'fill-opacity':0.9
+                            'fill-color': "transparent",
+                            'fill-outline-color': "#d2d5d5",
+                            'fill-opacity':1
                              
                         }
                     });                    
@@ -160,8 +158,8 @@
                             'visibility': 'visible'
                         },
                         paint:{
-                            'fill-color': "#2773ba",
-                            'fill-outline-color': "#53b6e7",
+                            'fill-color': "#a5b8df",
+                            'fill-outline-color': "#4f70a0",
                             'fill-opacity':0.8
                              
                         }
@@ -182,8 +180,8 @@
                             'visibility': 'visible'
                         },
                         paint:{
-                            'fill-color': "#62aca9",
-                            'fill-outline-color': "#53b6e7",
+                            'fill-color': "#7f9dd1",
+                            'fill-outline-color': "#4f70a0",
                             'fill-opacity':0.8
                              
                         }
@@ -205,7 +203,7 @@
                         },
                         paint:{
                             'fill-color': "#62aca9",
-                            'fill-outline-color': "#53b6e7",
+                            'fill-outline-color': "#4f70a0",
                             'fill-opacity':0.8
                              
                         }
@@ -227,8 +225,8 @@
                         },
                         paint:{
                             'fill-color': "#62aca9",
-                            'fill-outline-color': "#53b6e7",
-                            'fill-opacity':0.8
+                            'fill-outline-color': "#4f70a0",
+                            'fill-opacity':1
                              
                         }
                     });
@@ -248,7 +246,7 @@
                             'circle-color': "transparent",
                             'circle-stroke-color':"#b81f47",
                             'circle-stroke-width':1,
-                            'circle-radius':5
+                            'circle-radius':3
                         }
                     });
 
@@ -334,6 +332,7 @@
         </div>
         
         <div class="sub-title">:) :) :) :) :) :)</div>
+        
         <div class="legend">
             <div class="tab">
                 <p class="tab-name">Límites administrativos</p>
@@ -362,8 +361,8 @@
                 <nav id="menu"></nav>
             </div>
         </div>
-        <div class="more-info">
-            <p>+ more info</p>
-        </div>
+        
+        <div class="sub-sub-title">! ! ! ! ! ! ! ! ! !</div>
+
     </body>
 </html>
