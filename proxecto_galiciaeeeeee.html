@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <title>proxecto_galicia</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        
+        <style>
+            body { margin: 0; padding: 0; }
+            #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100% }
+        </style>
+        
+        <script>
+            function Init() {
+
+                //Access token
+                mapboxgl.accessToken = 'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow';
+                
+                //Creación del mapa
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'https://tilemaps.icgc.cat/tileserver/styles/positron.json',
+                    center: [-7.9639, 42.8126],
+                    zoom: 13,
+                    hash: true,
+                    attributionControl: false
+                });
+
+                //Controles del mapa
+                map.addControl(new mapboxgl.AttributionControl({
+                    compact: true
+                }));
+                map.addControl(new mapboxgl.NavigationControl());
+
+                //Llamamos funciones en el evento load
+                map.on('load', function () {
+
+                    //Camino_comarcas paisajisticas
+                    map.addSource("camino_comarcas_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.6zdc8w4i" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_comarcas",
+                        type: "fill",
+                        source: "camino_comarcas_source",
+                        'source-layer': "camino_comarcas-bvhgu4", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#000000",
+                            'fill-outline-color': "#ffffff",
+                            'fill-opacity':0.5
+                             
+                        }
+                    });
+
+                    //Camino_concellos
+                    map.addSource("camino_concellos_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.dpve3cbs" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_concellos",
+                        type: "fill",
+                        source: "camino_concellos_source",
+                        'source-layer': "camino_concellos-0ke7y3", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#000000",
+                            'fill-outline-color': "#ffffff",
+                            'fill-opacity':0.5
+                             
+                        }
+                    });
+
+                    //Camino_curvasnivel
+                    map.addSource("camino_curvasnivel_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.4yeeltx4" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_curvasnivel",
+                        type: "line",
+                        source: "camino_curvasnivel_source",
+                        'source-layer': "camino_curvasnivel_100-7mabx3", //poner vuestro titulo capa
+                        paint:{
+                            'line-color': "#000000"                             
+                        }
+                    });                   
+
+                    //Camino_polygons
+                    map.addSource("camino_polygons_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.7kv1xggf" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_polygons",
+                        type: "fill",
+                        source: "camino_polygons_source",
+                        'source-layer': "camino_polygons-4g7mbd", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#5daca2",
+                            'fill-outline-color': "#00ff00"
+                             
+                        }
+                    });
+                   
+                    //Camino_points
+                    map.addSource("camino_points_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.do1rhav7" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_points",
+                        type: "circle",
+                        source: "camino_points_source",
+                        'source-layer': "camino_points-3052r7", //poner vuestro titulo capa
+                        paint:{
+                            'circle-color':"#000000"  
+                        }
+                    });
+
+
+
+
+
+
+                });
+            }
+        </script>
+    </head>
+
+    <body onload="Init()">
+        <div id='map'></div>
+    </body>
+</html>

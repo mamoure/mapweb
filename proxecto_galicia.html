@@ -1,0 +1,369 @@
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <title>proxecto_galicia</title>
+        
+        <!--Font google: Roboto-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,900&display=swap" rel="stylesheet">
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        
+        <style>
+            ul,ol{list-style:none}
+            h1,h2,h3,h4,h5,h6,pre,code{font-size:1em;}
+            ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset{
+            margin:0;padding:0;line-height:1; list-style:none;}
+            a img,:link img,:visited img, fieldset{border:none;}
+            input[type=submit], input[type=reset], input[type=button] { *filter:chroma(color=#000000); }
+            
+            body { margin: 0; padding: 0; width:100%; height:100%; font-family: 'Roboto', sans-serif; font-weight: 300; color:#000000; }
+            
+            #map { position: relative; top: 0; bottom: 0; width: 100%; height: 100% }
+
+            .title { position:absolute; width:200px; top:20px; left:10px; padding-bottom: 1px; border-bottom: 3px solid #000000;  font-size: 60px; font-weight: 900;}
+                .title-small { font-size:40px; }
+            .sub-title { position:absolute; width:200px; top:200px; left:10px; padding-bottom: 20px; border-bottom: 3px solid #000000;  font-size: 40px; font-weight: 400; }
+            
+            .legend { position:absolute; width:200px; height: 300px; top:270px; left:10px; padding-bottom: 7px; border-bottom: 3px solid #000000; }
+                .tab  { padding:5px; }
+                    div.tab span { font-size: 10px; }
+                    .tab-name { font-size: 12px; font-weight: 400; }
+                    .tab-layer1 { font-size: 12px; border:1px solid #000000; margin:2 0 2 0; color:#000000; }
+                    .tab-layer2 { font-size: 12px; color: white; padding:1px; margin:2 0 2 0; background-color: black;}
+                    .tab-layer3 { font-size: 12px; border:1px solid #c4b72f; margin:2 0 2 0; color:#c4b72f; }
+                    .tab-layer4 { font-size: 12px; color: white; padding:1px; margin:2 0 2 0; background-color: #c4b72f; }
+                    .tab-layer5 { font-size: 12px; border:1px solid #ed254e; margin:2 0 2 0; color:#ed254e; }
+
+                    #menu { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; }
+                    #menu a { display: block; padding:1px; margin:2 0 2 0; text-decoration: none; background-color:#2773ba ;font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; color:white;  }
+                        #menu a.active { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 300; color:white;  color: white; }
+            
+            .more-info { position:absolute; width:200px; top:600px; left:10px; }
+            div.more-info p {padding: 5px; border: 1px solid #ed254e; }
+            
+
+        </style>
+        
+        <script>
+            function Init() {
+
+                //Access token
+                mapboxgl.accessToken = 'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow';
+                
+                //Creación del mapa
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mamoure/ck6z9qy3q2kzv1in3owgnoono',
+                    center: [-8.318, 42.803],
+                    zoom: 8.37,
+                    hash: true,
+                    attributionControl: false
+                });
+
+                //Controles del mapa
+                map.addControl(new mapboxgl.AttributionControl({
+                    compact: true
+                }));
+                map.addControl(new mapboxgl.NavigationControl());
+                map.setMinZoom(8.37);
+
+                //Creación de capas en el evento load
+                map.on('load', function () {
+
+                    //Camino_comarcas
+                    map.addSource("camino_comarcas_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.6zdc8w4i" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_comarcas",
+                        type: "fill",
+                        source: "camino_comarcas_source",
+                        'source-layer': "camino_comarcas-bvhgu4", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "transparent",
+                            'fill-outline-color': "#000000"
+                             
+                        }
+                    });
+                   
+                   //Camino_concellos
+                    map.addSource("camino_concellos_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.dpve3cbs" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_concellos",
+                        type: "fill",
+                        source: "camino_concellos_source",
+                        'source-layer': "camino_concellos-0ke7y3", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#000000",
+                            'fill-outline-color': "#ffffff",
+                            'fill-opacity':0.9
+                             
+                        }
+                    });
+
+                    //Camino_parroquias
+                    map.addSource("camino_parroquias_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.40hwl3u6" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_parroquias",
+                        type: "fill",
+                        source: "camino_parroquias_source",
+                        'source-layer': "camino_parroquias-7ar5kc", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#000000",
+                            'fill-outline-color': "#ffffff",
+                            'fill-opacity':0.9
+                             
+                        }
+                    });                    
+
+                    //Camino_aeip
+                    map.addSource("camino_aeip_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.d2rvqit2" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_aeip",
+                        type: "fill",
+                        source: "camino_aeip_source",
+                        'source-layer': "camino_aeip-a26gkq", //poner vuestro titulo capa
+                        paint:{
+                            'fill-color': "#c4b72f",
+                            'fill-opacity':0.8
+                             
+                        }
+                    });
+
+                    //Camino_polygons_respecto
+                    map.addSource("camino_polygons_respecto_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.co6vji7q" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "Ámbito respecto",
+                        type: "fill",
+                        source: "camino_polygons_respecto_source",
+                        'source-layer': "camino_polygons_respecto-04p11m", //poner vuestro titulo capa
+                        layout: {
+                            'visibility': 'visible'
+                        },
+                        paint:{
+                            'fill-color': "#2773ba",
+                            'fill-outline-color': "#53b6e7",
+                            'fill-opacity':0.8
+                             
+                        }
+                    });
+
+                    //Camino_polygons_bic
+                    map.addSource("camino_polygons_bic_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.8n8m5z9a" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "Ámbito BIC",
+                        type: "fill",
+                        source: "camino_polygons_bic_source",
+                        'source-layer': "camino_polygons_bic-8rqcdf", //poner vuestro titulo capa
+                        layout: {
+                            'visibility': 'visible'
+                        },
+                        paint:{
+                            'fill-color': "#62aca9",
+                            'fill-outline-color': "#53b6e7",
+                            'fill-opacity':0.8
+                             
+                        }
+                    });
+
+                    //Camino_polygons_30
+                    map.addSource("camino_polygons_30_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.86ff316i" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "30m",
+                        type: "fill",
+                        source: "camino_polygons_30_source",
+                        'source-layer': "camino_polygons_30-5u9hnp", //poner vuestro titulo capa
+                        layout: {
+                            'visibility': 'visible'
+                        },
+                        paint:{
+                            'fill-color': "#62aca9",
+                            'fill-outline-color': "#53b6e7",
+                            'fill-opacity':0.8
+                             
+                        }
+                    });
+
+                    //Camino_polygons_trazados
+                    map.addSource("camino_polygons_trazados_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.30fcq2xe" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "Trazados camiño",
+                        type: "fill",
+                        source: "camino_polygons_trazados_source",
+                        'source-layer': "camino_polygons_trazados-1d9oo9", //poner vuestro titulo capa
+                        layout: {
+                            'visibility': 'visible'
+                        },
+                        paint:{
+                            'fill-color': "#62aca9",
+                            'fill-outline-color': "#53b6e7",
+                            'fill-opacity':0.8
+                             
+                        }
+                    });
+
+                    //Camino_points
+                    map.addSource("camino_points_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.do1rhav7" //poner mapbox://vuestro id
+                    }); //fin map source
+
+                    map.addLayer({
+                        id: "camino_points",
+                        type: "circle",
+                        source: "camino_points_source",
+                        'source-layer': "camino_points-3052r7", //poner vuestro titulo capa
+                        paint:{
+                            'circle-color': "transparent",
+                            'circle-stroke-color':"#b81f47",
+                            'circle-stroke-width':1,
+                            'circle-radius':5
+                        }
+                    });
+
+                });
+            
+                // Creación de popup
+                var popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+                
+                map.on('mouseenter', 'camino_points', function(e) {
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+                
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    var description = e.features[0].properties.Name;
+                
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+                    
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+                    popup
+                    .setLngLat(coordinates)
+                    .setHTML(description)
+                    .addTo(map);
+                });
+                
+                map.on('mouseleave', 'camino_points', function() {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                });
+
+                //Control de capas
+                var toggleableLayerIds = ['Trazados camiño', '30m', 'Ámbito BIC', 'Ámbito respecto' ];
+                
+                for (var i = 0; i < toggleableLayerIds.length; i++) {
+                    var id = toggleableLayerIds[i];
+                    
+                    var link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'active';
+                    link.textContent = id;
+                    
+                    link.onclick = function(e) {
+                        var clickedLayer = this.textContent;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                        
+                        if (visibility === 'visible') {
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                        this.className = '';
+                        } else {
+                        this.className = 'active';
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                        }
+                    };
+                    
+                    var layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                }           
+
+
+            }
+
+        </script>
+    </head>
+
+    <body onload="Init()">
+        <div id='map'></div>
+        <div id="popup"></div>
+        <div class="title">
+            <p class="title-small">CAMIÑO</p>
+            <p>SENS/</p>
+            <p>ORIAL</p>
+        </div>
+        
+        <div class="sub-title">:) :) :) :) :) :)</div>
+        <div class="legend">
+            <div class="tab">
+                <p class="tab-name">Límites administrativos</p>
+                <p><span>Source:Información Xeográfica de Galicia</span></p>
+                <p class="tab-layer1">Parroquias</p>
+                <p class="tab-layer2">Concellos</p>
+            </div>
+
+            <div class="tab">            
+                <p class="tab-name">Caracterización territorial</p>
+                <p><span>Source:Información Xeográfica de Galicia</span></p>
+                <p class="tab-layer3">Comarcas paisaxísticas</p>
+                <p class="tab-layer4">Áreas Especial Interese Paisaxístico</p>
+            </div>
+ 
+            <div class="tab">
+                <p class="tab-name">Puntos de interese</p>
+                <p><span>Source:Datos Abertos da Xunta de Galicia</span></p>
+                <p class="tab-layer5">Patrimonio</p>
+                <p class="tab-layer5">Xacementos</p>
+            </div>
+ 
+            <div class="tab">                      
+                <p class="tab-name">Delimitación Camiño Francés</p>
+                <p><span>Source:Datos Abertos da Xunta de Galicia</span></p>
+                <nav id="menu"></nav>
+            </div>
+        </div>
+        <div class="more-info">
+            <p>+ more info</p>
+        </div>
+    </body>
+</html>
